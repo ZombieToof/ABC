@@ -1,17 +1,16 @@
-<?php 
+<?php
 $phpbb_root_path = '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 require_once 'library/abc_start_up.php';
-include_once 'library/functions/functions.output_options.php';
+include_once 'library/functions/functions.output_options.php'; 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Home</title>
+    <title>ABC &bull; Home</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 1;
@@ -38,8 +37,6 @@ include_once 'library/functions/functions.output_options.php';
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		<?php if(!$abc_user->is_signed_up && $campaign->state <> 4) { ?>
 		$(document).ready(function(e) {
 			$('#soldier_sign_up_btn').click(function(e) {
@@ -99,9 +96,7 @@ include_once 'library/functions/functions.output_options.php';
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -130,6 +125,7 @@ include_once 'library/functions/functions.output_options.php';
 						<li><a href="battleday_signup.php">Battle Day Sign Up</a></li>
                         <li><a href="control_panel.php">Control Panel</a></li>
 						<li><a href="armies.php">Armies</a></li>
+                        <li><a href="medals.php">Available Awards</a></li>
                     </ul>
                 </div>
                 <div class="content-left-box">
@@ -186,8 +182,8 @@ include_once 'library/functions/functions.output_options.php';
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>

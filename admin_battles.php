@@ -77,14 +77,13 @@ if(isset($_POST['action'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Battles</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <link rel="stylesheet" type="text/css" href="css/jqueryui/jquery-ui.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/jquery.colorpicker.css" media="screen" />
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="js/jquery.colorpicker.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 1;
@@ -111,8 +110,6 @@ if(isset($_POST['action'])) {
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
 		$('#battle_date<?php echo $battle_to_edit ? ', #battle_date' . $battle_to_edit : ''; ?>').datetimepicker({
 			dateFormat: "dd-mm-yy",
@@ -143,9 +140,7 @@ if(isset($_POST['action'])) {
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -235,8 +230,8 @@ if(isset($_POST['action'])) {
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>

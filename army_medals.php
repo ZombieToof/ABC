@@ -12,7 +12,8 @@ if($medal_to_edit) {
 	$query = "SELECT 
 		medal_id, 
 		army_id, 
-		medal_name, 
+		medal_name,
+    medal_description, 
 		medal_img, 
 		medal_ribbon, 
 		medal_time_stamp 
@@ -40,6 +41,7 @@ if(isset($_POST['action'])) {
 
     case 'edit':
 			$medal->name = $_POST['medal_name'];
+			$medal->description = $_POST['medal_description'];
       $filen = 0;
 			foreach($_FILES as $file) {
 				$dir = 'images/cache/medals/' . $campaign->id . '/' . $armies[$army_to_manage]['army']->id . '/'; //REMOVE . "phpbb/" ON LIVE SERVER
@@ -105,6 +107,7 @@ if(isset($_POST['action'])) {
 			$medal = new medal(array(), -1);
 			$medal->army_id = $armies[$army_to_manage]['army']->id;
 			$medal->name = $_POST['medal_name'];
+			$medal->description = $_POST['medal_description'];
       $filen = 0;
 			foreach($_FILES as $file) {
 				$dir = 'images/cache/medals/' . $campaign->id . '/' . $armies[$army_to_manage]['army']->id . '/'; //REMOVE . "phpbb/" ON LIVE SERVER
@@ -171,10 +174,9 @@ if(isset($_POST['action'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Medals</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 0;
@@ -201,8 +203,6 @@ if(isset($_POST['action'])) {
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
             <?php if($abc_user->is_admin) { ?>
 			$('#army-picker').change(function(e) {
@@ -231,9 +231,7 @@ if(isset($_POST['action'])) {
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -326,15 +324,20 @@ if(isset($_POST['action'])) {
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>
             </div>
             <div class="content-middle">
                 <div class="content-middle-box">
-                <?php if($abc_user->is_hc || $abc_user->is_admin) { ?>
+                <?php if($abc_user->is_hc || $abc_user->is_admin) {
+          					if(isset($_POST['action'])) { 
+          					//Display outcome of submitted form
+                    echo '<div class="large-heading">' . $msg_head . '</div>
+                    ' . $msg_body;
+                    } else { ?>
                     <div class="large-heading">
                         Army Medals
                         <?php if($abc_user->is_admin) {
@@ -364,6 +367,9 @@ if(isset($_POST['action'])) {
                     	<label for="medal_name">Name: </label>
                         <input type="text" name="medal_name" id="medal_name" value="<?php echo $medal->name; ?>" required="required" />
                       <br clear="all" /><br />
+                        <label for="medal_description">Description: </label>
+                        <textarea name="medal_description" id="medal_description" maxlength="765"><?php echo $medal->description; ?></textarea>
+                      <br clear="all" /><br />
                         <img src="<?php echo $medal->img; ?>" />
                         <label for="medal_img">New Image: </label>
                         <input type="file" name="medal_img" id="medal_img" />
@@ -385,6 +391,9 @@ if(isset($_POST['action'])) {
                     	<label for="nmedal_name">Name: </label>
                         <input type="text" name="medal_name" id="nmedal_name" required="required" />
                       <br clear="all" /><br />
+                        <label for="nmedal_description">Description: </label>
+                        <textarea name="medal_description" id="nmedal_description" maxlength="765"></textarea>
+                      <br clear="all" /><br />
                         <label for="nmedal_img">New Image: </label>
                         <input type="file" name="medal_img" id="nmedal_img" />
                       <br clear="all" /><br />
@@ -394,7 +403,8 @@ if(isset($_POST['action'])) {
                         <input type="submit" name="submit-new" value="Create" />
                     </form>
                     </div>
-                <?php } else { ?>
+                <?php }
+                } else { ?>
                     <div class="large-heading">Unauthorised access!</div>
                     You do not have permission to view this page.
                 <?php } ?>

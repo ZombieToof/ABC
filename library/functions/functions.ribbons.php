@@ -104,6 +104,6 @@ function ribbons($abc_id) {
   $user_assoc = $user_result->fetch_assoc();
   $campaign_id = $user_assoc["campaign_id"];
   
-  imagegif($image, "images/cache/medals/$campaign_id/$abc_id.gif");
+  imagegif($image, "images/cache/sigs/$campaign_id/$abc_id.gif");
   }
 ?>

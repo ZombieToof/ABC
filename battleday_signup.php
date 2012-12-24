@@ -13,16 +13,6 @@ $army_to_manage = ($abc_user->is_admin && isset($_GET['army'])) ? (int)$_GET['ar
 $army_management = new Army_management($army_to_manage);
 $army_users = new Sign_ups ($army_to_manage);
 $army_users->load_army_numbers();
-if ($_GET['battleid'] == 'next'){
-$next = array();
-$n = 0;
-	foreach($battles as $bat){
-		if(time() <= $bat->start){
-			$next[$n++] = $bat->id;
-			}
-		}
-		$battle_to_manage = (int)$next[0];
-}else
 $battle_to_manage = (isset($_GET['battleid'])) ? (int)$_GET['battleid'] : 0;
 $signed_up = 0;
 
@@ -119,10 +109,9 @@ if(isset($_POST['bd-s-submit'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Battle Day Sign Up</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 1;
@@ -149,8 +138,6 @@ if(isset($_POST['bd-s-submit'])) {
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
 			$('#battle-picker').change(function(e) {
                $(window).attr("location", "battleday_signup.php?battleid=" + $(this).val() + "&army=" + <?php echo $army_to_manage; ?>);
@@ -176,9 +163,7 @@ if(isset($_POST['bd-s-submit'])) {
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -207,11 +192,12 @@ if(isset($_POST['bd-s-submit'])) {
 						<li><a href="battleday_signup.php">Battle Day Sign Up</a></li>
                         <li><a href="control_panel.php">Control Panel</a></li>
 						<li><a href="armies.php">Armies</a></li>
+                        <li><a href="medals.php">Available Awards</a></li>
                     </ul>
                 </div>
                 <div class="content-left-box">
                     <div class="small-heading"><img src="images/icon_user.png" align="left" />SOLDIER INFO</div>
-                    <?php $abc_user->output_soldier_info();?>
+                    <?php $abc_user->output_soldier_info(); ?>
                 </div>
                 <?php if(count($bat_left_bar)) { ?>
                 <div class="content-left-box">
@@ -263,8 +249,8 @@ if(isset($_POST['bd-s-submit'])) {
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>

@@ -10,7 +10,6 @@ require_once 'library/abc_start_up.php';
     <title>Army Base Camp &bull; Army Management</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 1;
@@ -37,18 +36,14 @@ require_once 'library/abc_start_up.php';
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
 			
         });
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
-    <div class="new-body">
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
+   <div class="new-body">
         <div class="header">
             <div class="logo">
             </div>
@@ -137,8 +132,8 @@ require_once 'library/abc_start_up.php';
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>

@@ -9,8 +9,9 @@ class Medal {
 
 	public $army_id		= -1;
 	public $id			= -1;
-	public $img			= ""; //String containing relative URL to image used when displaying detailed info
 	public $name		= "";
+  public $description = "";
+	public $img			= ""; //String containing relative URL to image used when displaying detailed info
 	public $ribbon		= ""; //String containing relative URL to image used in medal signatures
 	public $time_stamp	= -1; //Time stamp of last update
 
@@ -39,9 +40,10 @@ class Medal {
 	function create() {
 		global $mysqli;
 		$query = "INSERT INTO abc_medals 
-			(army_id, medal_name, medal_img, medal_ribbon, medal_time_stamp) VALUES 
+			(army_id, medal_name, medal_description, medal_img, medal_ribbon, medal_time_stamp) VALUES 
 			(" . (int)$this->army_id . ", 
-			'" . $mysqli->real_escape_string($this->name) . "', 
+			'" . $mysqli->real_escape_string($this->name) . "',
+			'" . $mysqli->real_escape_string($this->description) . "', 
 			'" . $mysqli->real_escape_string($this->img) . "', 
 			'" . $mysqli->real_escape_string($this->ribbon) . "',
 			" . time() . ")";
@@ -75,7 +77,8 @@ class Medal {
 		global $mysqli;
 		$query .= "UPDATE abc_medals SET 
 			army_id = " . (int)$this->army_id . ", 
-			medal_name = '" . $mysqli->real_escape_string($this->name) . "', 
+			medal_name = '" . $mysqli->real_escape_string($this->name) . "',
+			medal_description = '" . $mysqli->real_escape_string($this->description) . "', 
 			medal_img = '" . $mysqli->real_escape_string($this->img) . "',
 			medal_ribbon = '" . $mysqli->real_escape_string($this->ribbon) . "', 
 			medal_time_stamp = " . time() . " 

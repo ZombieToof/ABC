@@ -23,6 +23,7 @@ if(isset($_POST['am-cb-submit'])) {
 								)
 							),
 		'am-cb-decision'	=> FILTER_VALIDATE_INT,
+    'am-cb-reason'  => FILTER_REQUIRE_STRING,
 		'am-checked'		=> array(
 			'filter'			=> FILTER_VALIDATE_INT,
 			'flags'				=> FILTER_REQUIRE_ARRAY
@@ -173,10 +174,10 @@ if(isset($_POST['am-cb-submit'])) {
 			case 3:
 				//Award medal
 				if($input['am-cb-decision']) {
-					$query = "INSERT INTO abc_medal_awards (campaign_id, user_id, medal_id, award_time_stamp) VALUES";
+					$query = "INSERT INTO abc_medal_awards (campaign_id, user_id, medal_id, award_reason, award_time_stamp) VALUES";
 					$limit = count($input['am-checked']);
 					for($i = 0; $i < $limit; $i++) {
-						$query .= "({$campaign->id}, {$input['am-checked'][$i]}, {$input['am-cb-decision']}, " . time();
+						$query .= "({$campaign->id}, {$input['am-checked'][$i]}, {$input['am-cb-decision']}, '{$input['am-cb-reason']}', " . time();
 						$query .= ($i < ($limit - 1)) ? "), " : ")";
 					}
 					if($mysqli->query($query)) {
@@ -234,10 +235,9 @@ if(isset($_POST['am-cb-submit'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Army Management</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
 		var cur_battle = 1;
@@ -264,8 +264,6 @@ if(isset($_POST['am-cb-submit'])) {
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
             <?php if($abc_user->is_admin) { ?>
 			$('#army-picker').change(function(e) {
@@ -282,14 +280,17 @@ if(isset($_POST['am-cb-submit'])) {
 						$('#am-cb-ajax').html(data);
 					}
 				});
+      if (p == 3) {
+        $('#am-cb-ajax-reason').slideDown(500);
+      } else {
+        $('#am-cb-ajax-reason').slideUp(500);
+        }
             });
         });
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -382,8 +383,8 @@ if(isset($_POST['am-cb-submit'])) {
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>
@@ -409,7 +410,7 @@ if(isset($_POST['am-cb-submit'])) {
                     <form name="am-update" id="am-update" method="POST">
                     <div class="am-control-box">
                     	<div class="small-heading">Control Box</div>
-                        Check the soldiers you wish to effect in the divisions below and then use the controls here to modify all those soldiers at once.
+                        Check the soldiers you wish to affect in the divisions below and then use the controls here to modify all those soldiers at once.
                         <br /><br />
                         <label for="am-cb-action">Action:</label>
                         <select name="am-cb-action" id="am-cb-action" class="am-cb-select">
@@ -421,6 +422,11 @@ if(isset($_POST['am-cb-submit'])) {
                         </select>
                         <div class="left" id="am-cb-ajax"></div>
                         <input type="submit" name="am-cb-submit" value="Go" />
+                        <div class="left" id="am-cb-ajax-reason">
+                          <br />
+                          <label for="am-cb-reason">Reason:</label>
+                          <textarea name="am-cb-reason" id="am-cb-reason" class="am-cb-text"></textarea>
+                        </div>
                         <div class="clear"></div>
                     </div>
 							

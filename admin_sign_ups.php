@@ -136,14 +136,13 @@ $sign_ups->load_army_numbers();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Sign Ups</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
-		var cur_battle = 0;
-		var max_battle = <?php echo (count($bat_left_bar) - 1); ?>;
+	var cur_battle = 1;
+		var max_battle = <?php echo (count($bat_left_bar)); ?>;
 		$(document).ready(function(e) {
 			$('.battle-left-window').css('height', $('.battle-left-wrapper').height());
 			$('.battle-left-wrapper').css('width', ((max_battle + 1) * 211));
@@ -153,7 +152,7 @@ $sign_ups->load_army_numbers();
 		$(document).on('click', '.battle-left-prev', function(e) {
 			$('.battle-left-wrapper').animate({ left: '+=210' }, 250);
 			cur_battle--;
-			if(cur_battle == 0)
+			if(cur_battle == 1)
 				$('.battle-left-prev').hide();
 			if(max_battle > cur_battle && !$('.battle-left-next').is(':visible'))
 				$('.battle-left-next').show();
@@ -166,14 +165,10 @@ $sign_ups->load_army_numbers();
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -263,8 +258,8 @@ $sign_ups->load_army_numbers();
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>
@@ -289,9 +284,8 @@ $sign_ups->load_army_numbers();
 					$sign_up_armour[] = $sign_ups->soldiers[$c] ;
 					} else if($sign_ups->soldiers[$c]['Role'] == 'Infantry') {
 					$sign_up_infantry[] = $sign_ups->soldiers[$c];
-					
-					} else
-					$sign_up_everything[] = $sign_ups->soldiers[$c];
+					var_dump($sign_up_infantry);
+					}
 					}
 					
 					if((isset($sign_up_air)) == true){
@@ -335,22 +329,14 @@ $sign_ups->load_army_numbers();
 						<input type="hidden" name="user_id[]" value="' . $infantrysoldier['user_id'] . '">
                         <br clear="all" /><br />';
 						}
-						
-					foreach($sign_up_everything as $everythingsoldier) {
-						
-                        echo '<div class="asu-name">' . $i++ . ". " . htmlentities($everythingsoldier['username']) . '</div>
-                        <div class="asu-army"><select name="army_id[]">';
-                        oo_armies();
-                        echo '</select></div>
-                        <input type="hidden" name="abc_user_id[]" value="' . $everythingsoldier['abc_user_id'] . '">
-						<input type="hidden" name="user_id[]" value="' . $everythingsoldier['user_id'] . '">
-                        <br clear="all" /><br />';
-						}
 					}	?>
                         <input type="submit" name="asu_save" value="Submit" />
                     </form>
                     <div class="clear"></div>
-					
+					<?php if((isset($sign_up_armour)) == true){
+						echo 'this works' ;
+						}
+					 ?>
                 <?php  } else { ?>
                     <div class="large-heading">Unauthorised access!</div>
                     You do not have permission to view this page.

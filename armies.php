@@ -6,27 +6,21 @@ require_once 'library/classes/class.army_management.php';
 /* $army_to_manage contains the pointer to the armies location in the array. 
  * As armies are loaded in the same way every page it is safe to use this on
  * other pages. */
-$army_to_manage = ($abc_user->is_admin && isset($_REQUEST['army'])) ? (int)$_REQUEST['army'] : $abc_user->army_ptr;
+$army_to_manage = (isset($_REQUEST['army'])) ? (int)$_REQUEST['army'] : $abc_user->army_ptr;
 $army_management = new Army_management($army_to_manage);
-
-//Deal with submitted form
-$form_head = "";
-$form_msg = "";
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Army Base Camp &bull; Army Management</title>
+    <title>ABC &bull; Armies</title>
     <link rel="stylesheet" type="text/css" href="css/abc_style.css" />
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.fullscreen.js"></script>
     <script type="text/javascript" language="javascript">
 		/* Controls the upcoming battles movements */
-		var cur_battle = 0;
-		var max_battle = <?php echo (count($bat_left_bar) - 1); ?>;
+		var cur_battle = 1;
+		var max_battle = <?php echo (count($bat_left_bar)); ?>;
 		$(document).ready(function(e) {
 			$('.battle-left-window').css('height', $('.battle-left-wrapper').height());
 			$('.battle-left-wrapper').css('width', ((max_battle + 1) * 211));
@@ -36,7 +30,7 @@ $form_msg = "";
 		$(document).on('click', '.battle-left-prev', function(e) {
 			$('.battle-left-wrapper').animate({ left: '+=210' }, 250);
 			cur_battle--;
-			if(cur_battle == 0)
+			if(cur_battle == 1)
 				$('.battle-left-prev').hide();
 			if(max_battle > cur_battle && !$('.battle-left-next').is(':visible'))
 				$('.battle-left-next').show();
@@ -49,32 +43,15 @@ $form_msg = "";
 			if(cur_battle > 0 && !$('.battle-left-prev').is(':visible'))
 				$('.battle-left-prev').show();
 		});
-		var FullscreenrOptions = {  width: 1920, height: 1080, bgID: '#bgimg' };
-		jQuery.fn.fullscreenr(FullscreenrOptions);
 		$(document).ready(function(e) {
-            <?php if($abc_user->is_admin) { ?>
 			$('#army-picker').change(function(e) {
                 $(window).attr("location", "armies.php?army=" + $(this).val());
-            });
-			<?php } ?>
-			$('#am-cb-action').change(function() {
-				var p = $(this).val();
-                $.ajax({
-					type:	'POST',
-					url:	'library/ajax/ajax.control_box.php',
-					data:	{ p: p, a: <?php echo $army_to_manage; ?> },
-					success: function(data) {
-						$('#am-cb-ajax').html(data);
-					}
-				});
             });
         });
 	</script>
 </head>
 
-<body>
-	<!-- Background image, uses the same image as the forum -->
-	<img src="<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg" id="bgimg" />
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
@@ -103,6 +80,7 @@ $form_msg = "";
 						<li><a href="battleday_signup.php">Battle Day Sign Up</a></li>
                         <li><a href="control_panel.php">Control Panel</a></li>
 						<li><a href="armies.php">Armies</a></li>
+                        <li><a href="medals.php">Available Awards</a></li>
                     </ul>
                 </div>
                 <div class="content-left-box">
@@ -159,8 +137,8 @@ $form_msg = "";
                         </div>
                     </div>
                     <div class="battle-left-controls">
-                    	<span class="battle-left-prev">Previous</span>
-                        <span class="battle-left-next">Next</span>
+                    	<input type="button" class="battle-left-prev" value="Previous" />
+                      <input type="button" class="battle-left-next" value="Next" />
                     </div>
                 </div>
                 <?php } ?>

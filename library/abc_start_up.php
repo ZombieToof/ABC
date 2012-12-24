@@ -7,16 +7,16 @@
  */
 
 date_default_timezone_set('UTC'); //Force server to use UTC timezone, it seems the host likes to use local timezone.
-require_once 'classes/class.phpbb_interaction.php';	//Must be included first to load all user information from PHPBB
-require_once 'config.php'; 							//Config file containing database connection details
-require_once 'classes/class.army.php';
-require_once 'classes/class.campaign.php';
-require_once 'classes/class.division.php';
-require_once 'classes/class.rank.php';
-require_once 'classes/class.medal.php';
-require_once 'classes/class.user.php';
-require_once 'classes/class.sign_ups.php';
-require_once 'classes/class.battle.php';
+require_once $phpbb_root_path.'abc/library/classes/class.phpbb_interaction.php';	//Must be included first to load all user information from PHPBB
+require_once $phpbb_root_path.'abc/library/config.php'; 							//Config file containing database connection details
+require_once $phpbb_root_path.'abc/library/classes/class.army.php';
+require_once $phpbb_root_path.'abc/library/classes/class.campaign.php';
+require_once $phpbb_root_path.'abc/library/classes/class.division.php';
+require_once $phpbb_root_path.'abc/library/classes/class.rank.php';
+require_once $phpbb_root_path.'abc/library/classes/class.medal.php';
+require_once $phpbb_root_path.'abc/library/classes/class.user.php';
+require_once $phpbb_root_path.'abc/library/classes/class.sign_ups.php';
+require_once $phpbb_root_path.'abc/library/classes/class.battle.php';
 
 //Initiate forum information
 define('IN_PHPBB', true);
@@ -112,7 +112,8 @@ if($campaign->is_running) {
 		$m_query = "SELECT 
 			medal_id,  
 			army_id, 
-			medal_name, 
+			medal_name,
+			medal_description, 
 			medal_img, 
 			medal_ribbon,
 			medal_time_stamp 
@@ -121,9 +122,8 @@ if($campaign->is_running) {
 			ORDER BY medal_name, medal_id";
 		$m_result = $mysqli->query($m_query);
 		$armies[$i]['army']->num_medals = $m_result->num_rows;
-		$l = 0;
 		while($m_row = $m_result->fetch_assoc())
-			$armies[$i]['medals'][$l++] = new Medal($m_row, $i);
+			$armies[$i]['medals'][$m_row['medal_id']] = new Medal($m_row, $i);
 		$i++;
 	}
 	
