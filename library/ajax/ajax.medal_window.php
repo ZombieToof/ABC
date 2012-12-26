@@ -53,7 +53,9 @@ echo ($medal->description != "") ? $medal->description : 'No description specifi
 echo '<br /><br />';
 echo '<b>Recipients:</b><br />';
 echo '<ul>';
+$counter = 0;
 foreach ($recipients as $recipient => $num_awarded) {
+  if ($counter >= 10) {break;}
   $recip_query = "SELECT user_id FROM abc_users WHERE abc_user_id = $recipient";
   $recip_result = $mysqli->query($recip_query);
   if ($recip_row = $recip_result->fetch_assoc()) {
@@ -63,7 +65,9 @@ foreach ($recipients as $recipient => $num_awarded) {
       echo '<li>'.$username_row['username'].' ('.$num_awarded.')</li>';
       }
     }
+  $counter++;
   }
+if (count($recipients) > 10) {echo '<li>...</li>';}
 echo '</ul>';
 echo '</div>';
 echo '<div class="clear"></div>';
