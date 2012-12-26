@@ -168,7 +168,7 @@ $sign_ups->load_army_numbers();
 	</script>
 </head>
 
-<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed center;">
+<body style="background: url('<?php echo $phpbb_root_path; ?>styles/DirtyBoard2/theme/images/bg_body.jpg') fixed bottom;">
     <div class="new-body">
         <div class="header">
             <div class="logo">
