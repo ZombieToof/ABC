@@ -43,8 +43,8 @@ switch($p) {
 	//Award medal
 	case 3:
 		echo '<select name="am-cb-decision" id="am-cb-decision" class="am-cb-select">';
-		for($i = 0; $i < $armies[$a]['army']->num_medals; $i++) {
-			echo '<option value="' . $armies[$a]['medals'][$i]->id . '">' . $armies[$a]['medals'][$i]->name . '</option>';
+		foreach($armies[$a]['medals'] as $medal_id => $medal) {
+			echo '<option value="' . $medal_id . '">' . $medal->name . '</option>';
 		}
 		echo '</select>';
 		break;
